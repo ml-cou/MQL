@@ -43,6 +43,8 @@ function ShowLog({ data = [], setData, isloding }) {
                     <div className="space-y-6 !w-full bg-transparent">
                       {Object.keys(val).map((v, ind) => (
                         <div key={ind}>
+                            {console.log("here table ",val[v])}
+
                           {/* {val[v]["text"] && (
                             <div className="font-secondary text-lg text-gray-800 font-semibold relative -top-2">
                               {val[v]["text"].map((item, index) => (
@@ -95,6 +97,13 @@ function ShowLog({ data = [], setData, isloding }) {
                             <h1 className=" font-semibold">Query :</h1>
                             <p className="bg-slate-100 p-2 font-secondary m-2">
                             {val[v]["query"]}</p>
+                            </>
+                          )}
+                          {val[v]["text"]&& (
+                            <>
+                            <h1 className=" font-semibold">Log :</h1>
+                            <p className="bg-slate-100 p-2 font-secondary m-2">
+                            {val[v]["text"]}</p>
                             </>
                           )}
                           {val[v]["performance_table"] && (

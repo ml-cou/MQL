@@ -13,7 +13,7 @@ from .operation.Temp_Generate import temp_generate
 def query_process(data):
     response = {}
     data_upper = data.upper()
-    print(data,"**************")
+    # print(data,"**************")
     if data_upper.startswith("SHOW"):
         yield show_db(data)
     elif data_upper.startswith("CONSTRUCT"):
@@ -30,7 +30,7 @@ def query_process(data):
             print("in generate")
             yield generate(data)
         else:
-            print("in simple generate")
+            print("in temp generate")
             yield temp_generate(data)
 
     elif data_upper.startswith("INSPECT"):
@@ -48,6 +48,6 @@ def query_process(data):
         yield impute(data)
 
     else:
-        query = f'{data};'
+        query = f'{data}'
         yield Query_manipulate(query)
     

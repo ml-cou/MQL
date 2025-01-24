@@ -9,3 +9,4 @@ __pycache__/
 # Ignore CSV files
 *.csv
 
+**/__pycache__/
