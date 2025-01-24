@@ -17,6 +17,7 @@ urlpatterns = [
     path('test_url/',test_view, name='test_view'),
     path('datasets/', list_datasets, name='list_datasets'),
     path('set_datasets/',set_datasets, name='set_datasets'),
+    path('process_nl_query/',process_nl_query_view, name='process_nl_query'),
     # path('upload_file/', upload) 
 ]
 if settings.DEBUG:

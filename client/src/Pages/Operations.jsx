@@ -23,6 +23,7 @@ function Operations() {
   const [testFileList, setTestFileList] = useState([]);
   const [isloding, setisloading] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false); // State for Drawer visibility
+  const [nlpQuery, setNlpQuery] = useState("");
 
   const handleExecute = async () => {
     setRowData();
@@ -56,6 +57,10 @@ function Operations() {
       const res = await fetch("http://localhost:8000/api/test_url/", {
         method: "POST",
         body: formData,
+        headers: {
+          "Accept": "application/json",
+        },
+        credentials: "include",
       });
       let d = await res.json();
       setisloading(false);
@@ -70,6 +75,46 @@ function Operations() {
       console.log(error);
     }
   };
+
+
+  const handleNlpQueryExecute = async () => {
+    setRowData();
+    setisloading(true);
+    if (!nlpQuery) {
+      toast.error("Query can't be empty");
+      return;
+    }
+    
+    try {
+      const formData = new FormData();
+      formData.append("query", nlpQuery);
+
+      if (fileList && fileList[0] && fileList[0].originFileObj)
+        formData.append("file", fileList[0].originFileObj);
+
+
+      const res = await fetch("http://localhost:8000/api/process_nl_query/", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Accept": "application/json",
+        },
+        credentials: "include",
+      });
+      let d = await res.json();
+      setisloading(false);
+      d = d.replaceAll("NaN", "null");
+
+      console.log(d);
+      d = JSON.parse(d);
+
+      setData((prev) => [...prev, d]);
+    } catch (error) {
+      setisloading(false);
+      console.log(error);
+    }
+  };
+
 
   return (
     <div className={`max-w-7xl mx-auto`}>
@@ -138,9 +183,36 @@ function Operations() {
             <Panel defaultSize={25} minSize={20}>
             <div className="">
               <h1 className="text-lg font-semibold mt-5">Enter your query</h1>
-              <TextArea size='large' className="h-52 " style={{ height: '200px' }}></TextArea>
-              <button className="mt-4 bg-blue-500 rounded text-white p-2 px-4 font-secondary font-semibold">
-                Convert To DL
+              <TextArea 
+                size='large' 
+                className="h-52 " 
+                style={{ height: '200px' }}
+                value={nlpQuery}
+                onChange={(e) => setNlpQuery(e.target.value)}
+              ></TextArea>
+              <div className="mt-4">
+                  <Upload
+                    className="!text-lg"
+                    fileList={fileList.map((file) => ({
+                      ...file,
+                      status: "done",
+                    }))}
+                    beforeUpload={(file) => {
+                      setFileList([
+                        { uid: file.uid, name: file.name, status: "done" },
+                      ]);
+                      return false;
+                    }}
+                    onChange={(e) => setFileList(e.fileList)}
+                  >
+                    {fileList.length === 0 && (
+                      <Button icon={<UploadOutlined />}>Upload File</Button>
+                    )}
+                  </Upload>
+                </div>
+              <button className="mt-4 bg-blue-500 rounded text-white p-2 px-4 font-secondary font-semibold" onClick={handleNlpQueryExecute}>
+                
+                Execute Query
               </button>
             </div>
             </Panel>

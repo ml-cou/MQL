@@ -16,6 +16,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+print("base dir", BASE_DIR)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -28,8 +30,11 @@ DEBUG = True
 
 from dotenv import load_dotenv
 # Load environment variables from .env file
-dotenv_path = os.path.join(BASE_DIR, '.env')
+dotenv_path = os.path.join(BASE_DIR, 'dl4ml/.env')
+print("env path:", dotenv_path)
 load_dotenv(dotenv_path=dotenv_path)
+
+print("POSTGES_URL", os.getenv("POSTGES_URL"))
 
 ALLOWED_HOSTS = []
 
@@ -64,8 +69,22 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://localhost:5174',
+    'http://localhost:8000',
+    'http://127.0.0.1:5173'
 ]
 ROOT_URLCONF = 'dl4ml.urls'
+
+CORS_ALLOW_CREDENTIALS = True  # Enable cookies or credentials if required
+
+# Optional: Allow all headers and methods for preflight
+CORS_ALLOW_HEADERS = [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept',
+]
+
+CORS_ALLOW_METHODS = ["GET", "POST", "OPTIONS"]
 
 TEMPLATES = [
     {
@@ -152,3 +171,5 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+print('Media Root', MEDIA_ROOT)

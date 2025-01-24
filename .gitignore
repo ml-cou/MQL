@@ -1,2 +1,11 @@
 .idea
 .vscode
+server/myvenv/
+*.pyc
+__pycache__/
+# Ignore pickle files
+*.pkl
+
+# Ignore CSV files
+*.csv
+
